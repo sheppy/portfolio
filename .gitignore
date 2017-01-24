@@ -1,0 +1,39 @@
+# Build
+lib
+coverage
+build
+webpack-assets.json
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# Dependency directory
+node_modules
+bower_components
+
+# Projects
+.idea/
+
+# JIRA plugin
+atlassian-ide-plugin.xml
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows shortcuts
+*.lnk
+
+.eslintcache
