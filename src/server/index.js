@@ -31,6 +31,7 @@ import { createStore, applyMiddleware } from "redux";
 import { ReduxAsyncConnect, loadOnServer } from "redux-connect";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
+import serialize from "serialize-javascript";
 
 import routes from "../shared/routes";
 import rootReducer from "../shared/store/reducers";
@@ -48,8 +49,6 @@ global.fetch = loadData;
 
 
 function renderFullPage(componentHTML, initialState) {
-    // TODO: Use serialize-javascript ?
-
     return `<!DOCTYPE html>
 <html>
 <head>
@@ -60,7 +59,7 @@ function renderFullPage(componentHTML, initialState) {
     <div id="app">${componentHTML}</div>
     
     <script type="application/javascript">
-      window.__INITIAL_STATE__ = ${JSON.stringify(initialState).replace(/</g, "\\u003c")};
+      window.__INITIAL_STATE__ = ${serialize(initialState)};
     </script>
     <script src="/vendor.js"></script>
     <script src="/app.js"></script>
