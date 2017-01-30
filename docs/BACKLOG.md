@@ -1,7 +1,5 @@
 # BACKLOG
 
-* Add nodemon
-
 * Add progressive images
 * View project page
 * Main page styles
