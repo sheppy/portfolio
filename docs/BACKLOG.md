@@ -1,6 +1,5 @@
 # BACKLOG
 
-* Fix hot reloading in development
 * Add nodemon
 
 * Add progressive images

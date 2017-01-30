@@ -40,6 +40,8 @@ module.exports = function () {
     const NODE_ENV = process.env.NODE_ENV;
     const IS_PROD = NODE_ENV === "production";
 
+    console.info(`Webpack: Production=${IS_PROD}`);
+
     const plugins = [
         new webpack.DefinePlugin({
             "process.env.NODE_ENV": JSON.stringify(NODE_ENV)
@@ -102,8 +104,10 @@ module.exports = function () {
 
         entry: {
             app: [
+                // TODO: Dev only:
                 "webpack-dev-server/client?http://127.0.0.1:8080/",
-                // "webpack/hot/only-dev-server",
+                "webpack/hot/only-dev-server",
+
                 "babel-polyfill",
                 PATHS.APP
             ],
@@ -115,8 +119,7 @@ module.exports = function () {
             // filename: "[name].[hash].js",
             chunkFilename: "[id].[chunkhash].js",
             sourceMapFilename: "[file].map",
-            publicPath: "/"
-            // publicPath: `http://localhost:8080/`
+            publicPath: IS_PROD ? "/" : "http://127.0.0.1:8080/"
         },
 
         resolve: {
@@ -131,12 +134,15 @@ module.exports = function () {
             rules: [
                 {
                     test: /\.jsx?$/,
-                    use: [{
-                        loader: "babel-loader",
-                        query: {
-                            cacheDirectory: true
+                    use: [
+                        "react-hot-loader",
+                        {
+                            loader: "babel-loader",
+                            query: {
+                                cacheDirectory: true
+                            }
                         }
-                    }],
+                    ],
                     exclude: /node_modules/
                 }
             ]
@@ -157,6 +163,7 @@ module.exports = function () {
             poll: 1000
         },
 
+        // TODO: Dev only?
         devServer: {
             contentBase: PATHS.PUBLIC,
             historyApiFallback: true,
