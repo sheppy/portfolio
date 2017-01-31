@@ -27,7 +27,6 @@ import * as T from "./actionTypes";
 
 
 export const fetchProjects = () => {
-    console.info("=fetchProjects=");
     return async(dispatch, getState) => {
         let date = Date.now();
 

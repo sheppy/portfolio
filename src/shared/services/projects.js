@@ -27,7 +27,6 @@ const PROJECTS_ENDPOINT = "/";
 
 class ProjectsService {
     async getDefaultProjects() {
-        console.info("=getDefaultProjects=");
         const url = `${PROJECTS_ENDPOINT}default.json`;
         const response = await fetch(url, {
             method: "GET",

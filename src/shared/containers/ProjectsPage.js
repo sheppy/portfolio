@@ -22,7 +22,6 @@
 "use strict";
 
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { asyncConnect } from "redux-connect";
 import * as projectsActions from "../store/projects/actions";
 import * as projectsSelector from "../store/projects/selectors";
@@ -32,12 +31,10 @@ import ProjectTile from "../components/ProjectTile";
 
 class ProjectsPage extends Component {
     componentDidMount() {
-        console.info("=ProjectsPage:componentDidMount=");
         this.props.dispatch(projectsActions.fetchProjects());
     }
 
     render() {
-        console.info("=ProjectsPage:render=");
         return (
             <div>
                 <h1>Projects</h1>
@@ -55,7 +52,6 @@ class ProjectsPage extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    console.info("=ProjectsPage:mapStateToProps=");
     return {
         rowsById: projectsSelector.getProjectsById(state),
         rowsIdArray: projectsSelector.getProjectsIdArray(state)
@@ -64,12 +60,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const preloadDataActions = [{
     // dispatch actions here required to preload data for the component to render
-    promise: ({ params, store: { dispatch }, location }) => {
-        console.info("=ProjectsPage:preloadDataActions=");
-        return dispatch(projectsActions.fetchProjects());
-    }
+    promise: ({ params, store: { dispatch }, location }) => dispatch(projectsActions.fetchProjects())
 }];
 
 
 export default asyncConnect(preloadDataActions, mapStateToProps)(ProjectsPage);
-// export default connect(mapStateToProps)(ProjectsPage);
