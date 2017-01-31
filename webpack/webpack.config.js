@@ -156,10 +156,18 @@ module.exports = function () {
                 {
                     test: /\.css$/,
                     exclude: /node_modules/,
-                    use: ExtractTextPlugin.extract({
-                        fallbackLoader: "style-loader",
-                        loader: "css-loader"
-                    })
+
+                    // TODO: Dev only
+                    use: [
+                        "style-loader",
+                        "css-loader?modules&importLoaders=1&camelCase&localIdentName=[name]_[local]_[hash:base64:5]!postcss-loader"
+                    ]
+
+                    // TODO: Production
+                    // use: ExtractTextPlugin.extract({
+                    //     fallbackLoader: "style-loader",
+                    //     loader: "css-loader?modules&importLoaders=1&camelCase&localIdentName=[name]_[local]_[hash:base64:5]!postcss-loader"
+                    // })
                 }
             ]
         },

@@ -32,6 +32,7 @@
     "webpack-dev-server": "2.2.0"
   },
   "dependencies": {
+    "autoprefixer": "^6.7.1",
     "babel-cli": "6.22.2",
     "babel-plugin-transform-object-rest-spread": "^6.22.0",
     "babel-plugin-transform-runtime": "6.22.0",
@@ -42,6 +43,12 @@
     "express": "4.14.0",
     "extract-text-webpack-plugin": "2.0.0-rc.2",
     "lodash": "4.17.4",
+    "postcss": "^5.2.11",
+    "postcss-csso": "^1.1.2",
+    "postcss-custom-props": "^1.1.2",
+    "postcss-import": "^9.1.0",
+    "postcss-loader": "^1.2.2",
+    "postcss-move-media": "^1.0.0-pre",
     "react": "15.4.2",
     "react-dom": "15.4.2",
     "react-redux": "5.0.2",
