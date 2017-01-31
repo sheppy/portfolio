@@ -23,10 +23,10 @@
 
 import React, { Component } from "react";
 import { asyncConnect } from "redux-connect";
-import * as projectsActions from "../store/projects/actions";
-import * as projectsSelector from "../store/projects/selectors";
-import ListView from "../components/ListView";
-import ProjectTile from "../components/ProjectTile";
+import * as projectsActions from "../../store/projects/actions";
+import * as projectsSelector from "../../store/projects/selectors";
+import ListView from "../../components/ListView/ListView";
+import ProjectTile from "../../components/ProjectTile/ProjectTile";
 
 
 class ProjectsPage extends Component {

@@ -1,4 +1,0 @@
-.tile {
-    display: block;
-    composes: title from "../styles/compositions/typography.css";
-}

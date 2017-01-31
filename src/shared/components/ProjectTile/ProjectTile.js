@@ -22,7 +22,7 @@
 "use strict";
 
 import React from "react";
-import ProgressiveImage from "./ProgressiveImage";
+import ProgressiveImage from "../ProgressiveImage/ProgressiveImage";
 import styles from "./ProjectTile.css";
 
 
