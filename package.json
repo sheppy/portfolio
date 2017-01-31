@@ -6,9 +6,10 @@
   "author": "Chris Sheppard <chris@chrissheppard.co.uk> (http://www.chrissheppard.co.uk/)",
   "license": "GPLv3",
   "scripts": {
-    "start": "npm run dev:start",
+    "start": "cross-env NODE_ENV=production npm run build && npm run server:start",
+    "start:dev": "cross-env NODE_ENV=development concurrently --kill-others \"npm run server:watch\" \"npm run webpack:watch\"",
     "build": "cross-env NODE_ENV=production npm run webpack:build",
-    "dev:start": "concurrently --kill-others \"npm run server:watch\" \"npm run webpack:watch\"",
+    "build:dev": "cross-env NODE_ENV=development npm run webpack:build",
     "server:start": "babel-node src",
     "server:watch": "nodemon --watch src --exec babel-node src",
     "webpack:build": "webpack --config webpack/webpack.config.js",
@@ -37,7 +38,9 @@
     "babel-polyfill": "6.22.0",
     "concurrently": "^3.1.0",
     "cross-env": "3.1.4",
+    "css-loader": "^0.26.1",
     "express": "4.14.0",
+    "extract-text-webpack-plugin": "2.0.0-rc.2",
     "lodash": "4.17.4",
     "react": "15.4.2",
     "react-dom": "15.4.2",
@@ -48,7 +51,9 @@
     "redux-thunk": "2.2.0",
     "seamless-immutable": "7.0.1",
     "serialize-javascript": "^1.3.0",
-    "split-by-path-webpack-plugin": "1.0.0"
+    "style-loader": "^0.13.1",
+    "webpack-isomorphic-tools": "^2.6.6",
+    "webpack-split-by-path": "^2.0.0"
   },
   "config": {
     "commitizen": {

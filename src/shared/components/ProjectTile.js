@@ -22,10 +22,11 @@
 "use strict";
 
 import React from "react";
+import styles from "./ProjectTile.css";
 
 
 const ProjectTile = ({id, title, imageTiny, image}) => (
-    <div>
+    <div className={styles.ProjectTile}>
         <h3>{title}</h3>
 
         <img src={`/${image}`} alt="" style={{ display: "block", width: "100%" }} />

@@ -21,10 +21,20 @@
 
 "use strict";
 
-import server from "./server";
 
+const path = require("path");
+const webpackIsomorphicToolsConfig = require("../webpack/webpack-isomorphic-tools");
+const WebpackIsomorphicTools = require("webpack-isomorphic-tools");
+
+
+const rootDir = path.resolve(__dirname, "..");
 const PORT = process.env.PORT || 3000;
 
-server.listen(PORT, () => {
-    console.info(`Server listening on ${PORT}`);
-});
+
+global.webpackIsomorphicTools = new WebpackIsomorphicTools(webpackIsomorphicToolsConfig)
+    .server(rootDir, () => {
+        let server = require("./server").default;
+        server.listen(PORT, () => {
+            console.info(`Server listening on ${PORT}`);
+        });
+    });

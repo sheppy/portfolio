@@ -23,9 +23,14 @@
 
 const path = require("path");
 const webpack = require("webpack");
-const SplitByPathPlugin = require("split-by-path-webpack-plugin");
+const SplitByPathPlugin = require("webpack-split-by-path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const webpackIsomorphicToolsConfig = require("./webpack-isomorphic-tools");
+const WebpackIsomorphicToolsPlugin = require("webpack-isomorphic-tools/plugin");
 
+
+const webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(webpackIsomorphicToolsConfig);
 
 const PATHS = {
     SRC: path.join(__dirname, "..", "src"),
@@ -47,13 +52,15 @@ module.exports = function () {
             "process.env.NODE_ENV": JSON.stringify(NODE_ENV)
         }),
         new webpack.optimize.AggressiveMergingPlugin(),
-        new SplitByPathPlugin({
-            buckets: [{
+        new SplitByPathPlugin(
+            [{
                 name: "vendor",
-                regex: /node_modules/
-            }]
-        }),
+                path: PATHS.NODE_MODULES
+            }],
+            { manifest: "vendor" }
+        ),
         new webpack.NamedModulesPlugin(),
+        new ExtractTextPlugin({ filename: "[name].[contenthash].css", allChunks: true })
 
         // new HtmlWebpackPlugin({
         //     template: path.join(PATHS.SRC, "index.html"),
@@ -84,13 +91,15 @@ module.exports = function () {
                 output: {
                     comments: false,
                 },
-            })
+            }),
+            webpackIsomorphicToolsPlugin
         );
     } else {
         plugins.push(
             new webpack.HotModuleReplacementPlugin({
                 multiStep: true
-            })
+            }),
+            webpackIsomorphicToolsPlugin.development()
         );
     }
 
@@ -116,7 +125,6 @@ module.exports = function () {
         output: {
             path: PATHS.BUILD,
             filename: "[name].js",
-            // filename: "[name].[hash].js",
             chunkFilename: "[id].[chunkhash].js",
             sourceMapFilename: "[file].map",
             publicPath: IS_PROD ? "/" : "http://127.0.0.1:8080/"
@@ -134,6 +142,7 @@ module.exports = function () {
             rules: [
                 {
                     test: /\.jsx?$/,
+                    exclude: /node_modules/,
                     use: [
                         "react-hot-loader",
                         {
@@ -142,8 +151,15 @@ module.exports = function () {
                                 cacheDirectory: true
                             }
                         }
-                    ],
-                    exclude: /node_modules/
+                    ]
+                },
+                {
+                    test: /\.css$/,
+                    exclude: /node_modules/,
+                    use: ExtractTextPlugin.extract({
+                        fallbackLoader: "style-loader",
+                        loader: "css-loader"
+                    })
                 }
             ]
         },

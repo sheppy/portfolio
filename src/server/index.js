@@ -48,12 +48,16 @@ async function loadData() {
 global.fetch = loadData;
 
 
-function renderFullPage(componentHTML, initialState) {
+function renderFullPage(componentHTML, initialState, assets) {
+    let styles = Object.keys(assets.styles).map(style => `<link href="${assets.styles[style]}" rel="stylesheet" />`);
+
     return `<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <title>Portfolio</title>
+    
+    ${styles.join("\n")}
 </head>
 <body>
     <div id="app">${componentHTML}</div>
@@ -61,8 +65,9 @@ function renderFullPage(componentHTML, initialState) {
     <script type="application/javascript">
       window.__INITIAL_STATE__ = ${serialize(initialState)};
     </script>
-    <script src="/vendor.js"></script>
-    <script src="/app.js"></script>
+    
+    <script src="${assets.javascript.vendor}"></script>
+    <script src="${assets.javascript.app}"></script>
 </body>
 </html>`;
 }
@@ -78,6 +83,10 @@ app.use((req, res) => {
     const store = createStore(rootReducer, middleware);
 
     match({ routes, location }, (err, redirectLocation, renderProps) => {
+        if (process.env.NODE_ENV === "development") {
+            webpackIsomorphicTools.refresh();
+        }
+
         if (err) {
             console.error(err);
             return res.status(500).end("Internal server error");
@@ -102,7 +111,7 @@ app.use((req, res) => {
             const initialState = store.getState();
             const componentHTML = renderToString(initialComponent);
 
-            res.end(renderFullPage(componentHTML, initialState));
+            res.end(renderFullPage(componentHTML, initialState, webpackIsomorphicTools.assets()));
         });
     });
 });
