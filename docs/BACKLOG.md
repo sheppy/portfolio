@@ -1,6 +1,5 @@
 # BACKLOG
 
-* Add progressive images
 * View project page
 * Add mongodb database for the data
 * Add Proptypes

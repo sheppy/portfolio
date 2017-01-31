@@ -22,6 +22,7 @@
 "use strict";
 
 import React from "react";
+import ProgressiveImage from "./ProgressiveImage";
 import styles from "./ProjectTile.css";
 
 
@@ -29,7 +30,7 @@ const ProjectTile = ({id, title, imageTiny, image}) => (
     <div className={styles.tile}>
         <h3>{title}</h3>
 
-        <img src={`/${image}`} alt="" style={{ display: "block", width: "100%" }} />
+        <ProgressiveImage placeholder={`/${imageTiny}`} src={`/${image}`} />
     </div>
 );
 
