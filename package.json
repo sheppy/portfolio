@@ -44,6 +44,7 @@
     "extract-text-webpack-plugin": "2.0.0-rc.2",
     "lodash": "4.17.4",
     "postcss": "^5.2.11",
+    "postcss-calc": "^5.3.1",
     "postcss-csso": "^1.1.2",
     "postcss-custom-props": "^1.1.2",
     "postcss-import": "^9.1.0",

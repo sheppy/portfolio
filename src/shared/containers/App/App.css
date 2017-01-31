@@ -1,0 +1,17 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Georgia, serif;
+}
+
+.app {
+    font-size: calc((18 / 16) * 1rem);
+    line-height: 1.44;
+}
+
+@media (min-width: 768px) {
+    .app {
+        font-size: calc((21 / 16) * 1rem);
+        line-height: 1.48;
+    }
+}

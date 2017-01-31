@@ -2,7 +2,6 @@
 
 * Add progressive images
 * View project page
-* Main page styles
 * Add mongodb database for the data
 * Add Proptypes
 * Add test framework

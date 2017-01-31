@@ -23,7 +23,7 @@
 
 import React from "react";
 import { IndexRoute, Route } from "react-router";
-import App from "../containers/App";
+import App from "../containers/App/App";
 import ProjectsPage from "../containers/ProjectsPage";
 
 export default (

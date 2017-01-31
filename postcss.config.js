@@ -26,6 +26,7 @@ module.exports = {
     plugins: {
         "postcss-import": {},
         "postcss-custom-props": {},
+        "postcss-calc": {},
         "postcss-move-media": {},
         "autoprefixer": {
             browsers: ["last 2 versions"]
