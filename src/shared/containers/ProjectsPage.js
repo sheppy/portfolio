@@ -51,6 +51,11 @@ class ProjectsPage extends Component {
     }
 }
 
+ProjectsPage.propTypes = {
+    rowsIdArray: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+    rowsById: React.PropTypes.object.isRequired
+};
+
 const mapStateToProps = (state, ownProps) => {
     return {
         rowsById: projectsSelector.getProjectsById(state),

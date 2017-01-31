@@ -65,5 +65,9 @@ class ProgressiveImage extends Component {
     }
 }
 
+ProgressiveImage.propTypes = {
+    src: React.PropTypes.string.isRequired,
+    placeholder: React.PropTypes.string.isRequired
+};
 
 export default ProgressiveImage;
