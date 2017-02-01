@@ -22,16 +22,14 @@
 "use strict";
 
 import React from "react";
-import { IndexRoute, Route } from "react-router";
-import App from "../containers/App/App";
-import ProjectsPage from "../containers/ProjectsPage/ProjectsPage";
-import ProjectPage from "../containers/ProjectPage/ProjectPage";
-import NotFound from "../components/NotFound/NotFound";
 
-export default (
-    <Route name="app" component={App} path="/">
-        <IndexRoute component={ProjectsPage} />
-        <Route component={ProjectPage} path="/project/:projectId" />
-        <Route path="*" status={404} component={NotFound} />
-    </Route>
+
+const NotFound = () => (
+    <div>
+        <h1>Page not found</h1>
+
+        <p>We are sorry but the page you are looking for does not exist.</p>
+    </div>
 );
+
+export default NotFound;

@@ -126,7 +126,9 @@ app.use((req, res) => {
                 const initialState = store.getState();
                 const componentHTML = renderToString(initialComponent);
 
-                res.end(renderFullPage(componentHTML, initialState, webpackIsomorphicTools.assets()));
+                const isNotFound = renderProps.routes.filter(route => route.status === 404).length > 0;
+
+                res.status(isNotFound ? 404 : 200).end(renderFullPage(componentHTML, initialState, webpackIsomorphicTools.assets()));
             })
             .catch(err => {
                 console.error(err);
