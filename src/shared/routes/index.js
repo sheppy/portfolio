@@ -25,10 +25,11 @@ import React from "react";
 import { IndexRoute, Route } from "react-router";
 import App from "../containers/App/App";
 import ProjectsPage from "../containers/ProjectsPage/ProjectsPage";
+import ProjectPage from "../containers/ProjectPage/ProjectPage";
 
 export default (
     <Route name="app" component={App} path="/">
         <IndexRoute component={ProjectsPage} />
-        {/*<Route component={ProjectsPage} path="projects" />*/}
+        <Route component={ProjectPage} path="/project/:projectId" />
     </Route>
 );

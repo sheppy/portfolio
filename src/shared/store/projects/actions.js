@@ -36,6 +36,21 @@ export const fetchProjects = () => {
             dispatch({ type: T.PROJECTS_FETCHED, date, projectsById });
         } catch (error) {
             console.error(error);
+            dispatch({ type: T.PROJECTS_FAILED, date });
+        }
+    };
+};
+
+export const fetchProjectDetails = (id) => {
+    return async(dispatch, getState) => {
+        let date = Date.now();
+
+        try {
+            const project = await projectsService.getProjectDetails(id);
+            dispatch({ type: T.PROJECT_FETCHED, date, project });
+        } catch (error) {
+            console.error(error);
+            dispatch({ type: T.PROJECT_FAILED, date, id });
         }
     };
 };

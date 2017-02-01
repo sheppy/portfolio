@@ -27,3 +27,5 @@ import keys from "lodash/keys";
 export const getProjectsById = state => state.projects.projectsById;
 
 export const getProjectsIdArray = state => keys(state.projects.projectsById);
+
+export const getProjectDetails = (state, id) => state.projects.projectsById[id];

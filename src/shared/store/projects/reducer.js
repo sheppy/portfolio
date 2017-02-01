@@ -26,13 +26,15 @@ import * as T from "./actionTypes";
 
 
 const initialState = Immutable({
-    projectsById: undefined,
+    projectsById: {},
     projectIds: []
 });
 
 const handlers = {
     [T.PROJECTS_FETCHED]: (state, action) =>
-        state.merge({ projectsById: action.projectsById })
+        state.merge({ projectsById: action.projectsById }, { deep: true }),
+    [T.PROJECT_FETCHED]: (state, action) =>
+        state.merge({ projectsById: { [action.project.id]: action.project }}, { deep: true })
 };
 
 export default (state = initialState, action = {}) =>

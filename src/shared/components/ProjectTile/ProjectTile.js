@@ -22,15 +22,18 @@
 "use strict";
 
 import React from "react";
+import { Link } from "react-router";
 import ProgressiveImage from "../ProgressiveImage/ProgressiveImage";
 import styles from "./ProjectTile.css";
 
 
 const ProjectTile = ({id, title, imageTiny, image}) => (
     <div className={styles.tile}>
-        <h3>{title}</h3>
+        <Link to={`/project/${id}`}>
+            <h3>{title}</h3>
 
-        <ProgressiveImage placeholder={`/${imageTiny}`} src={`/${image}`} />
+            <ProgressiveImage placeholder={`/${imageTiny}`} src={`/${image}`} />
+        </Link>
     </div>
 );
 

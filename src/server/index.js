@@ -26,7 +26,7 @@ import fs from "fs";
 import express from "express";
 import React from "react";
 import { renderToString } from "react-dom/server";
-import { match, createMemoryHistory } from "react-router";
+import { match } from "react-router";
 import { createStore, applyMiddleware } from "redux";
 import { ReduxAsyncConnect, loadOnServer } from "redux-connect";
 import { Provider } from "react-redux";
@@ -78,11 +78,10 @@ const app = express();
 app.use(express.static(path.resolve(__dirname, "..", "..", "public")));
 
 app.use((req, res) => {
-    const location = createMemoryHistory(req.url);
     const middleware = applyMiddleware(thunk);
     const store = createStore(rootReducer, middleware);
 
-    match({ routes, location }, (err, redirectLocation, renderProps) => {
+    match({ routes, location: req.url }, (err, redirectLocation, renderProps) => {
         if (process.env.NODE_ENV === "development") {
             webpackIsomorphicTools.refresh();
         }
@@ -101,18 +100,23 @@ app.use((req, res) => {
             return res.status(404).end("Not found.");
         }
 
-        loadOnServer({ ...renderProps, store }).then(() => {
-            const initialComponent = (
-                <Provider store={store}>
-                    <ReduxAsyncConnect {...renderProps} />
-                </Provider>
-            );
+        loadOnServer({ ...renderProps, store })
+            .then(() => {
+                const initialComponent = (
+                    <Provider store={store}>
+                        <ReduxAsyncConnect {...renderProps} />
+                    </Provider>
+                );
 
-            const initialState = store.getState();
-            const componentHTML = renderToString(initialComponent);
+                const initialState = store.getState();
+                const componentHTML = renderToString(initialComponent);
 
-            res.end(renderFullPage(componentHTML, initialState, webpackIsomorphicTools.assets()));
-        });
+                res.end(renderFullPage(componentHTML, initialState, webpackIsomorphicTools.assets()));
+            })
+            .catch(err => {
+                console.error(err);
+                res.status(500).end("Internal server error");
+            });
     });
 });
 

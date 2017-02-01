@@ -23,3 +23,8 @@
 
 export const PROJECTS_FETCH = "projects/FETCH";
 export const PROJECTS_FETCHED = "projects/FETCHED";
+export const PROJECTS_FAILED = "projects/FAILED";
+
+export const PROJECT_FETCH = "project/FETCH";
+export const PROJECT_FETCHED = "project/FETCHED";
+export const PROJECT_FAILED = "project/FAILED";
