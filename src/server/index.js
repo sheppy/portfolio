@@ -22,7 +22,6 @@
 "use strict";
 
 import path from "path";
-import fs from "fs";
 import express from "express";
 import React from "react";
 import { renderToString } from "react-dom/server";
@@ -32,18 +31,30 @@ import { ReduxAsyncConnect, loadOnServer } from "redux-connect";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import serialize from "serialize-javascript";
+import runMiddleware from "run-middleware";
 
+import api from "./api";
 import routes from "../shared/routes";
 import rootReducer from "../shared/store/reducers";
 
 
 // Patch fetch with local data!
-let data = fs.readFileSync(path.join(__dirname, "..", "..", "public", "default.json"), "utf-8");
-async function loadData() {
-    return {
-        ok: true,
-        json: function() { return JSON.parse(data); }
-    };
+async function loadData(url, options) {
+    return new Promise((resolve, reject) => {
+        app.runMiddleware(url, {}, function (statusCode, data) {
+            if (statusCode === 200) {
+                return resolve({
+                    ok: true,
+                    json: () => JSON.parse(data)
+                });
+            }
+
+            reject({
+                ok: false,
+                json: () => JSON.parse(data)
+            });
+        });
+    });
 }
 global.fetch = loadData;
 
@@ -75,7 +86,11 @@ function renderFullPage(componentHTML, initialState, assets) {
 
 const app = express();
 
+runMiddleware(app);
+
 app.use(express.static(path.resolve(__dirname, "..", "..", "public")));
+
+app.use("/api", api);
 
 app.use((req, res) => {
     const middleware = applyMiddleware(thunk);

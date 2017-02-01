@@ -21,59 +21,45 @@
 
 "use strict";
 
-import find from "lodash/find";
-
-const PROJECTS_ENDPOINT = "/";
+const PROJECTS_ENDPOINT = "/api/projects";
 
 
 class ProjectsService {
     async getDefaultProjects() {
-        const url = `${PROJECTS_ENDPOINT}default.json`;
-        const response = await fetch(url, {
+        const response = await fetch(PROJECTS_ENDPOINT, {
             method: "GET",
-            headers: {
-                Accept: "application/json"
-            }
+            headers: { Accept: "application/json" }
         });
 
         if (!response.ok) {
-            throw new Error(`ProjectsService getDefaultProjects failed, HTTP status ${response.status}`);
+            throw new Error(`ProjectsService::getDefaultProjects() failed, HTTP status ${response.status}`);
         }
 
         const data = await response.json();
         const projects = data.projects;
 
         if (!projects) {
-            throw new Error(`ProjectsService getDefaultProjects failed, projects not returned`);
+            throw new Error(`ProjectsService::getDefaultProjects() failed, projects not returned`);
         }
 
         return projects;
     }
 
     async getProjectDetails(id) {
-        const url = `${PROJECTS_ENDPOINT}default.json`;
-        const response = await fetch(url, {
+        const response = await fetch(`${PROJECTS_ENDPOINT}/${id}`, {
             method: "GET",
-            headers: {
-                Accept: "application/json"
-            }
+            headers: { Accept: "application/json" }
         });
 
         if (!response.ok) {
-            throw new Error(`ProjectsService getProjectDetails(${id}) failed, HTTP status ${response.status}`);
+            throw new Error(`ProjectsService::getProjectDetails(${id}) failed, HTTP status ${response.status}`);
         }
 
         const data = await response.json();
-        const projects = data.projects;
-
-        if (!projects) {
-            throw new Error(`ProjectsService getProjectDetails(${id}) failed, projects not returned`);
-        }
-
-        const project = find(projects, { id: parseInt(id, 10) });
+        const project = data.project;
 
         if (!project) {
-            throw new Error(`ProjectsService getProjectDetails(${id}) failed, project not found`);
+            throw new Error(`ProjectsService::getProjectDetails(${id}) failed, project not found`);
         }
 
         return project;
