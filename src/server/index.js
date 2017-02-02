@@ -34,6 +34,7 @@ import serialize from "serialize-javascript";
 import runMiddleware from "run-middleware";
 import NestedStatus from "react-nested-status";
 import ReactHelmet from "react-helmet";
+import expressStaticGzip from "express-static-gzip";
 
 import api from "./api";
 import routes from "../shared/routes";
@@ -94,7 +95,8 @@ const app = express();
 
 runMiddleware(app);
 
-app.use(express.static(path.resolve(__dirname, "..", "..", "public")));
+app.use("/", expressStaticGzip(path.resolve(__dirname, "..", "..", "build")));
+app.use("/", expressStaticGzip(path.resolve(__dirname, "..", "..", "public")));
 
 app.use("/api", api);
 

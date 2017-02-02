@@ -26,6 +26,7 @@ const merge = require("webpack-merge");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const OptimizeJsPlugin = require("optimize-js-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const CompressionPlugin = require("compression-webpack-plugin");
 const webpackIsomorphicToolsConfig = require("./webpack-isomorphic-tools");
 const WebpackIsomorphicToolsPlugin = require("webpack-isomorphic-tools/plugin");
 const PATHS = require("./paths");
@@ -79,6 +80,13 @@ const prodConfig = {
             },
         }),
         new OptimizeJsPlugin({ sourceMap: false }),
+        new CompressionPlugin({
+            asset: "[path].gz[query]",
+            algorithm: "gzip",
+            test: /\.js$|\.css$|\.html$/,
+            threshold: 10240,
+            minRatio: 0.8
+        }),
         webpackIsomorphicToolsPlugin
     ],
 
