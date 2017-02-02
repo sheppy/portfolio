@@ -1,7 +1,8 @@
 # Build
 lib
 coverage
-build
+build/*
+!build/.gitkeep
 webpack-assets.json
 
 # Logs
