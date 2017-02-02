@@ -24,7 +24,6 @@
 const path = require("path");
 const webpack = require("webpack");
 const SplitByPathPlugin = require("webpack-split-by-path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const OptimizeJsPlugin = require("optimize-js-plugin");
 const webpackIsomorphicToolsConfig = require("./webpack-isomorphic-tools");
@@ -62,12 +61,6 @@ module.exports = function () {
         ),
         new webpack.NamedModulesPlugin(),
         new ExtractTextPlugin({ filename: "[name].[contenthash].css", allChunks: true })
-
-        // new HtmlWebpackPlugin({
-        //     template: path.join(PATHS.SRC, "index.html"),
-        //     filename: "index.html",
-        //     inject: true
-        // })
     ];
 
     if (IS_PROD) {
@@ -126,7 +119,7 @@ module.exports = function () {
 
         output: {
             path: PATHS.BUILD,
-            filename: "[name].js",
+            filename: "[name].[hash].js",
             chunkFilename: "[id].[chunkhash].js",
             sourceMapFilename: "[file].map",
             publicPath: IS_PROD ? "/" : "http://127.0.0.1:8080/"

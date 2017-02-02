@@ -63,10 +63,11 @@ function renderFullPage(componentHTML, initialState, assets) {
     let styles = Object.keys(assets.styles).map(style => `<link href="${assets.styles[style]}" rel="stylesheet" />`);
 
     return `<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <title>Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     ${styles.join("\n")}
 </head>
