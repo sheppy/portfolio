@@ -5,3 +5,5 @@
 * Move Server index HTML to JSX
 * Add react-document-meta
 * Add reselect
+* Render inline CSS when in development
+* Logging
