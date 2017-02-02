@@ -33,6 +33,7 @@ import thunk from "redux-thunk";
 import serialize from "serialize-javascript";
 import runMiddleware from "run-middleware";
 import NestedStatus from "react-nested-status";
+import ReactHelmet from "react-helmet";
 
 import api from "./api";
 import routes from "../shared/routes";
@@ -61,14 +62,17 @@ global.fetch = loadData;
 
 
 function renderFullPage(componentHTML, initialState, assets) {
-    let styles = Object.keys(assets.styles).map(style => `<link href="${assets.styles[style]}" rel="stylesheet" />`);
+    const styles = Object.keys(assets.styles).map(style => `<link href="${assets.styles[style]}" rel="stylesheet" />`);
+    const head = ReactHelmet.rewind();
+    const regexRemoveMetaDataAttr = / data-react-helmet="true"/g;
 
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Portfolio</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    ${head.title.toString().replace(regexRemoveMetaDataAttr, "")}
+    ${head.meta.toString().replace(regexRemoveMetaDataAttr, "")}
     
     ${styles.join("\n")}
 </head>

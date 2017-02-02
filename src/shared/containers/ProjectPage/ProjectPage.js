@@ -23,6 +23,7 @@
 
 import React, { Component } from "react";
 import { asyncConnect } from "redux-connect";
+import Helmet from "react-helmet";
 import * as projectsActions from "../../store/projects/actions";
 import * as projectsSelector from "../../store/projects/selectors";
 import NotFound from "../../components/NotFound/NotFound";
@@ -40,6 +41,8 @@ class ProjectPage extends Component {
 
         return (
             <div>
+                <Helmet title={this.props.project.title} />
+
                 <h1>{this.props.project.title}</h1>
 
                 <p>{this.props.project.description}</p>

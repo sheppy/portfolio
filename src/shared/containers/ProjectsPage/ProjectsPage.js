@@ -23,6 +23,7 @@
 
 import React, { Component } from "react";
 import { asyncConnect } from "redux-connect";
+import Helmet from "react-helmet";
 import * as projectsActions from "../../store/projects/actions";
 import * as projectsSelector from "../../store/projects/selectors";
 import ListView from "../../components/ListView/ListView";
@@ -37,6 +38,8 @@ class ProjectsPage extends Component {
     render() {
         return (
             <div>
+                <Helmet title="Recent Projects" />
+
                 <h1>Projects</h1>
 
                 <ListView rowsIdArray={this.props.rowsIdArray} rowsById={this.props.rowsById} renderRow={this.renderRow} />

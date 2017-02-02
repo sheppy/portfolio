@@ -23,11 +23,12 @@
 
 import React from "react";
 import NestedStatus from "react-nested-status";
-
+import Helmet from "react-helmet";
 
 const NotFound = () => (
     <NestedStatus code={404}>
         <div>
+            <Helmet title="Page not found" meta={[{ "name": "robots", "content": "noindex" }]}/>
             <h1>Page not found</h1>
 
             <p>We are sorry but the page you are looking for does not exist.</p>

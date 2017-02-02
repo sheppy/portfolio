@@ -22,12 +22,14 @@
 "use strict";
 
 import React, { Component } from "react";
+import Helmet from "react-helmet";
 import styles from "./App.css";
 
 class App extends Component {
     render() {
         return (
             <div className={styles.app}>
+                <Helmet defaultTitle="My Portfolio" titleTemplate="%s - Portfolio"/>
                 <p>Lorem ipsum</p>
                 {this.props.children}
             </div>
