@@ -26,6 +26,7 @@ const webpack = require("webpack");
 const SplitByPathPlugin = require("webpack-split-by-path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const OptimizeJsPlugin = require("optimize-js-plugin");
 const webpackIsomorphicToolsConfig = require("./webpack-isomorphic-tools");
 const WebpackIsomorphicToolsPlugin = require("webpack-isomorphic-tools/plugin");
 
@@ -92,6 +93,7 @@ module.exports = function () {
                     comments: false,
                 },
             }),
+            new OptimizeJsPlugin({ sourceMap: false }),
             webpackIsomorphicToolsPlugin
         );
     } else {
