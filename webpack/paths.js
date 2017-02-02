@@ -24,6 +24,7 @@
 const path = require("path");
 
 module.exports = {
+    ROOT: path.resolve(__dirname, ".."),
     SRC: path.join(__dirname, "..", "src"),
     APP: path.join(__dirname, "..", "src", "client", "index.js"),
     BUILD: path.join(__dirname, "..", "build"),

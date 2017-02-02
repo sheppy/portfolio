@@ -21,7 +21,6 @@
 
 "use strict";
 
-const path = require("path");
 const webpack = require("webpack");
 const SplitByPathPlugin = require("webpack-split-by-path");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
@@ -31,7 +30,7 @@ const PATHS = require("./paths");
 const commonConfig = {
     cache: true,
 
-    context: path.resolve(__dirname, ".."),
+    context: PATHS.ROOT,
 
     entry: {
         app: [

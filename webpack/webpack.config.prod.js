@@ -23,10 +23,12 @@
 
 const webpack = require("webpack");
 const merge = require("webpack-merge");
+const CleanWebpackPlugin = require("clean-webpack-plugin");
 const OptimizeJsPlugin = require("optimize-js-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const webpackIsomorphicToolsConfig = require("./webpack-isomorphic-tools");
 const WebpackIsomorphicToolsPlugin = require("webpack-isomorphic-tools/plugin");
+const PATHS = require("./paths");
 const commonConfig = require("./webpack.common");
 
 
@@ -49,6 +51,12 @@ const prodConfig = {
     },
 
     plugins: [
+        new CleanWebpackPlugin([PATHS.BUILD], {
+            root: PATHS.ROOT,
+            verbose: true,
+            dry: false,
+            exclude: [".gitkeep"]
+        }),
         new webpack.LoaderOptionsPlugin({
             minimize: true,
             debug: false
