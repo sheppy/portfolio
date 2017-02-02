@@ -32,6 +32,7 @@ import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import serialize from "serialize-javascript";
 import runMiddleware from "run-middleware";
+import NestedStatus from "react-nested-status";
 
 import api from "./api";
 import routes from "../shared/routes";
@@ -93,7 +94,7 @@ app.use(express.static(path.resolve(__dirname, "..", "..", "public")));
 
 app.use("/api", api);
 
-app.use((req, res) => {
+app.use((req, res, next) => {
     const middleware = applyMiddleware(thunk);
     const store = createStore(rootReducer, middleware);
 
@@ -103,8 +104,7 @@ app.use((req, res) => {
         }
 
         if (err) {
-            console.error(err);
-            return res.status(500).end("Internal server error");
+            return next(err);
         }
 
         // In case of redirect propagate the redirect to the browser
@@ -113,6 +113,7 @@ app.use((req, res) => {
         }
 
         if (!renderProps) {
+            // TODO: When does this happen?
             return res.status(404).end("Not found.");
         }
 
@@ -126,17 +127,19 @@ app.use((req, res) => {
 
                 const initialState = store.getState();
                 const componentHTML = renderToString(initialComponent);
+                const status = NestedStatus.rewind();
 
-                const isNotFound = renderProps.routes.filter(route => route.status === 404).length > 0;
-
-                res.status(isNotFound ? 404 : 200).end(renderFullPage(componentHTML, initialState, webpackIsomorphicTools.assets()));
+                res.status(status).end(renderFullPage(componentHTML, initialState, webpackIsomorphicTools.assets()));
             })
-            .catch(err => {
-                console.error(err);
-                res.status(500).end("Internal server error");
-            });
+            .catch(next);
     });
 });
 
+
+app.use((err, req, res, next) => {
+    // TODO: Nice static error page
+    console.error(err);
+    res.status(500).end("500: Internal server error");
+});
 
 export default app;

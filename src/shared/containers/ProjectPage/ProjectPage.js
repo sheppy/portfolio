@@ -25,6 +25,7 @@ import React, { Component } from "react";
 import { asyncConnect } from "redux-connect";
 import * as projectsActions from "../../store/projects/actions";
 import * as projectsSelector from "../../store/projects/selectors";
+import NotFound from "../../components/NotFound/NotFound";
 
 
 class ProjectPage extends Component {
@@ -33,6 +34,10 @@ class ProjectPage extends Component {
     }
 
     render() {
+        if (!this.props.project) {
+            return (<NotFound />);
+        }
+
         return (
             <div>
                 <h1>{this.props.project.title}</h1>

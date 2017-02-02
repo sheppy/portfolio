@@ -32,6 +32,6 @@ export default (
     <Route name="app" component={App} path="/">
         <IndexRoute component={ProjectsPage} />
         <Route component={ProjectPage} path="/project/:projectId" />
-        <Route path="*" status={404} component={NotFound} />
+        <Route path="*" component={NotFound} />
     </Route>
 );
