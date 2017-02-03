@@ -13,10 +13,10 @@ logs
 pids
 *.pid
 *.seed
+.env
 
 # Dependency directory
 node_modules
-bower_components
 
 # Projects
 .idea/

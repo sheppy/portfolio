@@ -21,6 +21,8 @@
 
 "use strict";
 
+// Load environment variables
+require("dotenv").config();
 
 const path = require("path");
 const webpackIsomorphicToolsConfig = require("../webpack/webpack-isomorphic-tools");

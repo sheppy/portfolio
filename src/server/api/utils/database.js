@@ -23,8 +23,7 @@
 
 import mongoose from "mongoose";
 
-const DB_URI = process.env.MONGOLAB_URI || `mongodb://localhost:27017/portfolio_${process.env.NODE_ENV}`;
-
+const DB_URI = process.env.DB_URI || process.env.MONGOLAB_URI;
 
 mongoose.Promise = global.Promise;
 
