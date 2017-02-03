@@ -22,6 +22,7 @@
 "use strict";
 
 import mongoose from "mongoose";
+import logger from "../../logger";
 
 const DB_URI = process.env.DB_URI || process.env.MONGOLAB_URI;
 
@@ -36,6 +37,6 @@ let options = {
 
 const db = mongoose.connect(DB_URI, options);
 
-mongoose.connection.on("error", console.error.bind(console, "connection error:"));
+mongoose.connection.on("error", logger.error);
 
 export default db;

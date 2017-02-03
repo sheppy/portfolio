@@ -23,6 +23,9 @@
 
 import path from "path";
 import express from "express";
+import runMiddleware from "run-middleware";
+import expressStaticGzip from "express-static-gzip";
+import expressWinston from "express-winston";
 import React from "react";
 import { renderToString } from "react-dom/server";
 import { match } from "react-router";
@@ -30,12 +33,11 @@ import { createStore, applyMiddleware } from "redux";
 import { ReduxAsyncConnect, loadOnServer } from "redux-connect";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
-import serialize from "serialize-javascript";
-import runMiddleware from "run-middleware";
 import NestedStatus from "react-nested-status";
 import ReactHelmet from "react-helmet";
-import expressStaticGzip from "express-static-gzip";
+import serialize from "serialize-javascript";
 
+import logger from "./logger";
 import api from "./api";
 import routes from "../shared/routes";
 import rootReducer from "../shared/store/reducers";
@@ -98,6 +100,13 @@ runMiddleware(app);
 app.use("/", expressStaticGzip(path.resolve(__dirname, "..", "..", "build")));
 app.use("/", expressStaticGzip(path.resolve(__dirname, "..", "..", "public")));
 
+// Logging
+app.use(expressWinston.logger({
+    winstonInstance: logger,
+    expressFormat: true,
+    colorize: true
+}));
+
 app.use("/api", api);
 
 app.use((req, res, next) => {
@@ -144,7 +153,7 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
     // TODO: Nice static error page
-    console.error(err);
+    logger.error(err);
     res.status(500).end("500: Internal server error");
 });
 

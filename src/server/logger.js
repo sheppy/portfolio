@@ -21,23 +21,39 @@
 
 "use strict";
 
-// Load environment variables
-require("dotenv").config();
+import winston from "winston";
+import { Papertrail } from "winston-papertrail";
 
-const path = require("path");
-const WebpackIsomorphicTools = require("webpack-isomorphic-tools");
-const webpackIsomorphicToolsConfig = require("../webpack/webpack-isomorphic-tools");
-const logger = require("./server/logger").default;
+const transports = [
+    new winston.transports.Console({
+        level: "debug",
+        timestamp: () => new Date().toISOString(),
+        colorize: true,
+        handleExceptions: true
+    })
+];
 
-
-const rootDir = path.resolve(__dirname, "..");
-const PORT = process.env.PORT || 3000;
-
-
-global.webpackIsomorphicTools = new WebpackIsomorphicTools(webpackIsomorphicToolsConfig)
-    .server(rootDir, () => {
-        let server = require("./server").default;
-        server.listen(PORT, () => {
-            logger.info(`🌍 Server started - listening on port ${PORT}`);
-        });
+// Enable papertrail logging
+if (process.env.PAPERTRAIL_HOST && process.env.PAPERTRAIL_PORT) {
+    const paperTrailTransport = new Papertrail({
+        host: process.env.PAPERTRAIL_HOST,
+        port: process.env.PAPERTRAIL_PORT,
+        colorize: true,
+        handleExceptions: true,
+        program: "Portfolio"
     });
+
+    paperTrailTransport.on("error", err => logger && logger.error(err));
+    paperTrailTransport.on("connect", message => logger && logger.info(message));
+
+    transports.push(paperTrailTransport);
+}
+
+
+const logger = new winston.Logger({
+    transports,
+    exitOnError: false
+});
+
+export default logger;
+
