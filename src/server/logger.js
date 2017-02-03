@@ -24,10 +24,12 @@
 import winston from "winston";
 import { Papertrail } from "winston-papertrail";
 
+const tsFormat = () => new Date().toISOString();
+
 const transports = [
     new winston.transports.Console({
-        level: "debug",
-        timestamp: () => new Date().toISOString(),
+        level: process.env === "development" ? "debug" : "info",
+        timestamp: tsFormat,
         colorize: true,
         handleExceptions: true
     })
@@ -36,11 +38,13 @@ const transports = [
 // Enable papertrail logging
 if (process.env.PAPERTRAIL_HOST && process.env.PAPERTRAIL_PORT) {
     const paperTrailTransport = new Papertrail({
+        program: "Portfolio",
         host: process.env.PAPERTRAIL_HOST,
         port: process.env.PAPERTRAIL_PORT,
+        level: "info",
+        timestamp: tsFormat,
         colorize: true,
-        handleExceptions: true,
-        program: "Portfolio"
+        handleExceptions: true
     });
 
     paperTrailTransport.on("error", err => logger && logger.error(err));
