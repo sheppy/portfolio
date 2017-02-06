@@ -5,4 +5,3 @@
 * Move Server index HTML to JSX
 * Add reselect
 * Render inline CSS when in development
-* Analytics

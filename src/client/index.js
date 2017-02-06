@@ -28,6 +28,7 @@ import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import Immutable from "seamless-immutable";
+import ReactGA from "react-ga";
 import routes from "../shared/routes";
 import rootReducer from "../shared/store/reducers";
 
@@ -41,9 +42,19 @@ const middleware = applyMiddleware(thunk);
 const store = createStore(rootReducer, initialState, middleware);
 
 
+if (process.env.NODE_ENV === "production") {
+    // TODO: Set the GA account
+    // ReactGA.initialize("UA-000000-01");
+}
+
+const logPageView = () => {
+    ReactGA.set({ page: window.location.pathname });
+    ReactGA.pageview(window.location.pathname);
+};
+
 render(
     <Provider store={store}>
-        <Router children={routes} history={browserHistory} />
+        <Router children={routes} history={browserHistory} onUpdate={logPageView}/>
     </Provider>,
     document.getElementById("app")
 );
