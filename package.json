@@ -2,7 +2,7 @@
   "name": "portfolio",
   "private": true,
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/index.js",
   "author": "Chris Sheppard <chris@chrissheppard.co.uk> (http://www.chrissheppard.co.uk/)",
   "license": "GPLv3",
   "scripts": {
