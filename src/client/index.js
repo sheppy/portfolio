@@ -33,10 +33,11 @@ import routes from "../shared/routes";
 import rootReducer from "../shared/store/reducers";
 
 
-let initialState = Immutable(window.__INITIAL_STATE__);
-
-// Allow the passed state to be garbage-collected
-delete window.__INITIAL_STATE__;
+let bootstrap = document.getElementById("bootstrap").textContent;
+if (bootstrap) {
+    bootstrap = JSON.parse(bootstrap);
+}
+let initialState = Immutable(bootstrap);
 
 const middleware = applyMiddleware(thunk);
 const store = createStore(rootReducer, initialState, middleware);

@@ -73,7 +73,7 @@ function renderFullPage(componentHTML, initialState, assets) {
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     ${head.title.toString().replace(regexRemoveMetaDataAttr, "")}
     ${head.meta.toString().replace(regexRemoveMetaDataAttr, "")}
     
@@ -82,8 +82,8 @@ function renderFullPage(componentHTML, initialState, assets) {
 <body>
     <div id="app">${componentHTML}</div>
     
-    <script type="application/javascript">
-      window.__INITIAL_STATE__ = ${serialize(initialState)};
+    <script type="application/json" id="bootstrap">
+      ${serialize(initialState)}
     </script>
     
     <script src="${assets.javascript.vendor}"></script>
