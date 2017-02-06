@@ -66,6 +66,7 @@ global.fetch = loadData;
 
 function renderFullPage(componentHTML, initialState, assets) {
     const styles = Object.keys(assets.styles).map(style => `<link href="${assets.styles[style]}" rel="stylesheet" />`);
+    const inlineStyles = Object.keys(assets.assets).map(asset => assets.assets[asset]._style || '');
     const head = ReactHelmet.rewind();
     const regexRemoveMetaDataAttr = / data-react-helmet="true"/g;
 
@@ -77,6 +78,7 @@ function renderFullPage(componentHTML, initialState, assets) {
     ${head.title.toString().replace(regexRemoveMetaDataAttr, "")}
     ${head.meta.toString().replace(regexRemoveMetaDataAttr, "")}
     
+    <style type="text/css">${inlineStyles.join("\n")}</style>
     ${styles.join("\n")}
 </head>
 <body>
