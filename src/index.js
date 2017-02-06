@@ -24,11 +24,6 @@
 // Load environment variables
 require("dotenv").config();
 
-// Performance monitoring
-if (process.env.SPM_TOKEN) {
-    require("spm-agent-nodejs");
-}
-
 const path = require("path");
 const WebpackIsomorphicTools = require("webpack-isomorphic-tools");
 const webpackIsomorphicToolsConfig = require("../webpack/webpack-isomorphic-tools");
