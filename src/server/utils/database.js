@@ -22,7 +22,7 @@
 "use strict";
 
 import mongoose from "mongoose";
-import logger from "../../logger";
+import logger from "./logger";
 
 const DB_URI = process.env.DB_URI || process.env.MONGOLAB_URI;
 

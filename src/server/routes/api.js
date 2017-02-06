@@ -23,8 +23,8 @@
 
 import express from "express";
 import bodyParser from "body-parser";
-import "./utils/database";
-import routes from "./routes";
+import "../utils/database";
+import routes from "../api/routes";
 
 const api = express.Router();
 

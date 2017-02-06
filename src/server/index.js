@@ -26,23 +26,13 @@ import express from "express";
 import runMiddleware from "run-middleware";
 import expressStaticGzip from "express-static-gzip";
 import expressWinston from "express-winston";
-import React from "react";
-import { renderToString } from "react-dom/server";
-import { match } from "react-router";
-import { createStore, applyMiddleware } from "redux";
-import { ReduxAsyncConnect, loadOnServer } from "redux-connect";
-import { Provider } from "react-redux";
-import thunk from "redux-thunk";
-import NestedStatus from "react-nested-status";
-import ReactHelmet from "react-helmet";
-import serialize from "serialize-javascript";
 
-import logger from "./logger";
-import api from "./api";
-import routes from "../shared/routes";
-import rootReducer from "../shared/store/reducers";
+import logger from "./utils/logger";
+import apiRoute from "./routes/api";
+import reactRoute from "./routes/react";
 
 
+// TODO: Move to utils
 // Patch fetch with local data!
 async function loadData(url, options) {
     return new Promise((resolve, reject) => {
@@ -64,41 +54,12 @@ async function loadData(url, options) {
 global.fetch = loadData;
 
 
-function renderFullPage(componentHTML, initialState, assets) {
-    const styles = Object.keys(assets.styles).map(style => `<link href="${assets.styles[style]}" rel="stylesheet" />`);
-    const inlineStyles = Object.keys(assets.assets).map(asset => assets.assets[asset]._style || '');
-    const head = ReactHelmet.rewind();
-    const regexRemoveMetaDataAttr = / data-react-helmet="true"/g;
-
-    return `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    ${head.title.toString().replace(regexRemoveMetaDataAttr, "")}
-    ${head.meta.toString().replace(regexRemoveMetaDataAttr, "")}
-    
-    <style type="text/css">${inlineStyles.join("\n")}</style>
-    ${styles.join("\n")}
-</head>
-<body>
-    <div id="app">${componentHTML}</div>
-    
-    <script type="application/json" id="bootstrap">
-      ${serialize(initialState)}
-    </script>
-    
-    <script src="${assets.javascript.vendor}"></script>
-    <script src="${assets.javascript.app}"></script>
-</body>
-</html>`;
-}
-
-
 const app = express();
 
+// Middleware to access /api routes internally
 runMiddleware(app);
 
+// Static assets
 app.use("/", expressStaticGzip(path.resolve(__dirname, "..", "..", "build")));
 app.use("/", expressStaticGzip(path.resolve(__dirname, "..", "..", "public")));
 
@@ -109,50 +70,13 @@ app.use(expressWinston.logger({
     colorize: true
 }));
 
-app.use("/api", api);
+// Routes
+app.use("/api", apiRoute);
+app.use(reactRoute);
 
-app.use((req, res, next) => {
-    const middleware = applyMiddleware(thunk);
-    const store = createStore(rootReducer, middleware);
+// TODO: Static 404 page
 
-    match({ routes, location: req.url }, (err, redirectLocation, renderProps) => {
-        if (process.env.NODE_ENV === "development") {
-            webpackIsomorphicTools.refresh();
-        }
-
-        if (err) {
-            return next(err);
-        }
-
-        // In case of redirect propagate the redirect to the browser
-        if (redirectLocation) {
-            return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-        }
-
-        if (!renderProps) {
-            // TODO: When does this happen?
-            return res.status(404).end("Not found.");
-        }
-
-        loadOnServer({ ...renderProps, store })
-            .then(() => {
-                const initialComponent = (
-                    <Provider store={store}>
-                        <ReduxAsyncConnect {...renderProps} />
-                    </Provider>
-                );
-
-                const initialState = store.getState();
-                const componentHTML = renderToString(initialComponent);
-                const status = NestedStatus.rewind();
-
-                res.status(status).end(renderFullPage(componentHTML, initialState, webpackIsomorphicTools.assets()));
-            })
-            .catch(next);
-    });
-});
-
-
+// Static error page
 app.use((err, req, res, next) => {
     // TODO: Nice static error page
     logger.error(err);

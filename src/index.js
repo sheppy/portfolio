@@ -27,7 +27,7 @@ require("dotenv").config();
 const path = require("path");
 const WebpackIsomorphicTools = require("webpack-isomorphic-tools");
 const webpackIsomorphicToolsConfig = require("../webpack/webpack-isomorphic-tools");
-const logger = require("./server/logger").default;
+const logger = require("./server/utils/logger").default;
 
 
 const rootDir = path.resolve(__dirname, "..");
