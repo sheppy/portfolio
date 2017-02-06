@@ -31,6 +31,7 @@ import NotFound from "../components/NotFound/NotFound";
 export default (
     <Route name="app" component={App} path="/">
         <IndexRoute component={ProjectsPage} />
+        <Route component={ProjectsPage} path="/index.html" />
         <Route component={ProjectPage} path="/project/:projectId" />
         <Route path="*" component={NotFound} />
     </Route>
