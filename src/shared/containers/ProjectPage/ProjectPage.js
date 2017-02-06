@@ -31,7 +31,10 @@ import NotFound from "../../components/NotFound/NotFound";
 
 class ProjectPage extends Component {
     componentDidMount() {
-        this.props.dispatch(projectsActions.fetchProjectDetails(this.props.params.projectId));
+        // TODO: Another check to load additional data
+        if (!this.props.project) {
+            this.props.dispatch(projectsActions.fetchProjectDetails(this.props.params.projectId));
+        }
     }
 
     render() {

@@ -32,7 +32,9 @@ import ProjectTile from "../../components/ProjectTile/ProjectTile";
 
 class ProjectsPage extends Component {
     componentDidMount() {
-        this.props.dispatch(projectsActions.fetchProjects());
+        if (!this.props.rowsById || !this.props.rowsIdArray) {
+            this.props.dispatch(projectsActions.fetchProjects());
+        }
     }
 
     render() {
