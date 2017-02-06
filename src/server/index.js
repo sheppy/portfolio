@@ -26,6 +26,7 @@ import express from "express";
 import runMiddleware from "run-middleware";
 import expressStaticGzip from "express-static-gzip";
 import expressWinston from "express-winston";
+import helmet from "helmet";
 
 import logger from "./utils/logger";
 import apiRoute from "./routes/api";
@@ -55,6 +56,25 @@ global.fetch = loadData;
 
 
 const app = express();
+
+// Security
+if (process.env.NODE_ENV === "production") {
+    app.use(helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: ["'self'"],
+            styleSrc: ["'self'", "'unsafe-inline'"],
+            fontSrc: ["'self'", "data:"]
+        }
+    }));
+}
+app.use(helmet.dnsPrefetchControl());
+app.use(helmet.frameguard({ action: "sameorigin" }));
+app.use(helmet.hidePoweredBy());
+app.use(helmet.ieNoOpen());
+app.use(helmet.noSniff());
+app.use(helmet.referrerPolicy({ policy: "same-origin" }));
+app.use(helmet.xssFilter());
+
 
 // Middleware to access /api routes internally
 runMiddleware(app);

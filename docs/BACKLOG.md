@@ -5,6 +5,5 @@
 * Add reselect
 * etags etc?
 * Express security: flood protection
-* Express security: helmet headers
 * mongodb security
 * caching
