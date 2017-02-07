@@ -28,6 +28,9 @@ const REGEX_REMOVE_META_DATA_ATTR = / data-react-helmet="true"/g;
 
 
 export default function renderFullPage(componentHtml, head, state = {}, assets = {}) {
+    const title = head.title.toString().replace(REGEX_REMOVE_META_DATA_ATTR, "");
+    const meta = head.meta.toString().replace(REGEX_REMOVE_META_DATA_ATTR, "");
+
     const styles = Object.keys(assets.styles).map(style => `<link href="${assets.styles[style]}" rel="stylesheet">`);
     const inlineStyles = Object.keys(assets.assets).map(asset => assets.assets[asset]._style || "").filter(n => !!n);
 
@@ -35,8 +38,11 @@ export default function renderFullPage(componentHtml, head, state = {}, assets =
         styles.unshift(`<style type="text/css">${inlineStyles.join("\n")}</style>`);
     }
 
-    const title = head.title.toString().replace(REGEX_REMOVE_META_DATA_ATTR, "");
-    const meta = head.meta.toString().replace(REGEX_REMOVE_META_DATA_ATTR, "");
+    const scripts = Object.keys(assets.javascript).filter(n => n !== "vendor").map(script => `<script src="${assets.javascript[script]}"></script>`);
+
+    if (assets.javascript.vendor) {
+        scripts.unshift(`<script src="${assets.javascript.vendor}"></script>`)
+    }
 
     const bootstrap = state ? `<script type="application/json" id="bootstrap">${serialize(state)}</script>` : "";
 
@@ -54,8 +60,7 @@ export default function renderFullPage(componentHtml, head, state = {}, assets =
     
     ${bootstrap}
     
-    <script src="${assets.javascript.vendor}"></script>
-    <script src="${assets.javascript.app}"></script>
+    ${scripts.join("\n")}
 </body>
 </html>`;
 
