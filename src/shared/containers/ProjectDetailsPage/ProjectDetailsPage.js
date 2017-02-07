@@ -29,7 +29,7 @@ import * as projectsSelector from "../../store/projects/selectors";
 import NotFound from "../../components/NotFound/NotFound";
 
 
-class ProjectPage extends Component {
+class ProjectDetailsPage extends Component {
     componentDidMount() {
         // TODO: Another check to load additional data
         if (!this.props.project) {
@@ -54,7 +54,7 @@ class ProjectPage extends Component {
     }
 }
 
-ProjectPage.propTypes = {
+ProjectDetailsPage.propTypes = {
     project: React.PropTypes.object.isRequired
 };
 
@@ -70,4 +70,4 @@ const preloadDataActions = [{
 }];
 
 
-export default asyncConnect(preloadDataActions, mapStateToProps)(ProjectPage);
+export default asyncConnect(preloadDataActions, mapStateToProps)(ProjectDetailsPage);

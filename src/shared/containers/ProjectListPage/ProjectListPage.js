@@ -30,7 +30,7 @@ import ListView from "../../components/ListView/ListView";
 import ProjectTile from "../../components/ProjectTile/ProjectTile";
 
 
-class ProjectsPage extends Component {
+class ProjectListPage extends Component {
     componentDidMount() {
         if (!this.props.rowsById || !this.props.rowsIdArray) {
             this.props.dispatch(projectsActions.fetchProjects());
@@ -56,7 +56,7 @@ class ProjectsPage extends Component {
     }
 }
 
-ProjectsPage.propTypes = {
+ProjectListPage.propTypes = {
     rowsIdArray: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
     rowsById: React.PropTypes.object.isRequired
 };
@@ -74,4 +74,4 @@ const preloadDataActions = [{
 }];
 
 
-export default asyncConnect(preloadDataActions, mapStateToProps)(ProjectsPage);
+export default asyncConnect(preloadDataActions, mapStateToProps)(ProjectListPage);

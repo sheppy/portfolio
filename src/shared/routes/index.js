@@ -24,15 +24,15 @@
 import React from "react";
 import { IndexRoute, Route } from "react-router";
 import App from "../containers/App/App";
-import ProjectsPage from "../containers/ProjectsPage/ProjectsPage";
-import ProjectPage from "../containers/ProjectPage/ProjectPage";
+import ProjectListPage from "../containers/ProjectListPage/ProjectListPage";
+import ProjectDetailsPage from "../containers/ProjectDetailsPage/ProjectDetailsPage";
 import NotFound from "../components/NotFound/NotFound";
 
 export default (
     <Route name="app" component={App} path="/">
-        <IndexRoute component={ProjectsPage} />
-        <Route component={ProjectsPage} path="/index.html" />
-        <Route component={ProjectPage} path="/project/:projectId" />
+        <IndexRoute component={ProjectListPage} />
+        <Route component={ProjectListPage} path="/index.html" />
+        <Route component={ProjectDetailsPage} path="/project/:projectId" />
         <Route path="*" component={NotFound} />
     </Route>
 );
