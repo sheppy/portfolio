@@ -32,42 +32,12 @@ import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import NestedStatus from "react-nested-status";
 import ReactHelmet from "react-helmet";
-import serialize from "serialize-javascript";
 
 import routes from "../../shared/routes";
 import rootReducer from "../../shared/store/reducers";
+import renderFullPage from "../utils/renderFullPage";
 
 const reactRoute = express.Router();
-
-
-function renderFullPage(html, head, state, assets) {
-    const styles = Object.keys(assets.styles).map(style => `<link href="${assets.styles[style]}" rel="stylesheet" />`);
-    const inlineStyles = Object.keys(assets.assets).map(asset => assets.assets[asset]._style || "");
-    const REGEX_REMOVE_META_DATA_ATTR = / data-react-helmet="true"/g;
-
-    return `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    ${head.title.toString().replace(REGEX_REMOVE_META_DATA_ATTR, "")}
-    ${head.meta.toString().replace(REGEX_REMOVE_META_DATA_ATTR, "")}
-    
-    <style type="text/css">${inlineStyles.join("\n")}</style>
-    ${styles.join("\n")}
-</head>
-<body>
-    <div id="app">${html}</div>
-    
-    <script type="application/json" id="bootstrap">
-      ${serialize(state)}
-    </script>
-    
-    <script src="${assets.javascript.vendor}"></script>
-    <script src="${assets.javascript.app}"></script>
-</body>
-</html>`;
-}
 
 
 const serverSideRender = async (url) => {
