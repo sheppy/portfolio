@@ -31,6 +31,9 @@ projectsRoute.param("projectId", project.projectIdParam);
 projectsRoute.route("/")
     .get(project.getProjects);
 
+projectsRoute.route("/tags")
+    .get(project.getProjectTags);
+
 projectsRoute.route("/:projectId")
     .get(project.getProject);
 

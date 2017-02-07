@@ -48,13 +48,32 @@ export const projectIdParam = (req, res, next, id) => {
 };
 
 export const getProjects = (req, res, next) => {
+    let { tags, sort = "-createdAt" } = req.query;
+    const query = {};
+
+    if (tags) {
+        query.tags = { $all: tags.split(",") };
+    }
+
+    if (sort) {
+        sort = sort.replace(",", " ");
+    }
+
     ProjectModel
-        .find({})
-        .select("id title image imageTiny")
+        .find(query)
+        .select("id title image imageTiny tags")
+        .sort(sort)
         .then(projects => res.json({ projects }))
         .catch(next);
 };
 
 export const getProject = (req, res) => {
     res.json({ project: req.project });
+};
+
+export const getProjectTags = (req, res, next) => {
+    ProjectModel
+        .distinct("tags")
+        .then(tags => res.json({ tags }))
+        .catch(next);
 };
