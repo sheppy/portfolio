@@ -22,6 +22,7 @@
 "use strict";
 
 import path from "path";
+import url from "url";
 import express from "express";
 import runMiddleware from "run-middleware";
 import expressStaticGzip from "express-static-gzip";
@@ -35,9 +36,12 @@ import reactRoute from "./routes/react";
 
 // TODO: Move to utils
 // Patch fetch with local data!
-async function loadData(url, options) {
+async function loadData(fetchUrl, options) {
+    let urlDetails = url.parse(fetchUrl, true);
+    let query = urlDetails.query;
+
     return new Promise((resolve, reject) => {
-        app.runMiddleware(url, {}, function (statusCode, data) {
+        app.runMiddleware(fetchUrl, { query }, function (statusCode, data) {
             if (statusCode === 200) {
                 return resolve({
                     ok: true,

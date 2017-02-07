@@ -32,6 +32,7 @@ export default (
     <Route name="app" component={App} path="/">
         <IndexRoute component={ProjectListPage} />
         <Route component={ProjectListPage} path="/index.html" />
+        <Route component={ProjectListPage} path="/tags/:tags" />
         <Route component={ProjectDetailsPage} path="/project/:projectId" />
         <Route path="*" component={NotFound} />
     </Route>

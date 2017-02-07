@@ -70,7 +70,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const preloadDataActions = [{
     // dispatch actions here required to preload data for the component to render
-    promise: ({ params, store: { dispatch }, location }) => dispatch(projectsActions.fetchProjects())
+    promise: ({ params, store: { dispatch }, location }) => dispatch(projectsActions.fetchProjects(params))
 }];
 
 

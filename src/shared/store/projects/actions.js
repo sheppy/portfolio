@@ -26,12 +26,12 @@ import projectsService from "../../services/projects";
 import * as T from "./actionTypes";
 
 
-export const fetchProjects = () => {
+export const fetchProjects = (params) => {
     return async(dispatch, getState) => {
         let date = Date.now();
 
         try {
-            const projectsArray = await projectsService.getDefaultProjects();
+            const projectsArray = await projectsService.getProjectList(params);
             const projectsById = keyBy(projectsArray, "id");
             dispatch({ type: T.PROJECTS_FETCHED, date, projectsById });
         } catch (error) {

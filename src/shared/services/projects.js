@@ -25,8 +25,12 @@ const PROJECTS_ENDPOINT = "/api/projects";
 
 
 class ProjectsService {
-    async getDefaultProjects() {
-        const response = await fetch(PROJECTS_ENDPOINT, {
+    async getProjectList(params) {
+        const query = Object.keys(params)
+            .map(k => encodeURIComponent(k) + "=" + encodeURIComponent(params[k]))
+            .join("&");
+
+        const response = await fetch(PROJECTS_ENDPOINT + "?" + query, {
             method: "GET",
             headers: { Accept: "application/json" }
         });
