@@ -4,7 +4,7 @@ import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import ReactHelmet from "react-helmet";
 import renderFullPage from "../src/server/utils/renderFullPage";
-import ServerError from "../src/shared/components/ServerError/ServerError";
+import ServerError from "../src/server/components/ServerError/ServerError";
 
 
 export default function(config) {

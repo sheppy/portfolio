@@ -23,7 +23,7 @@
 
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import Html from "../../shared/containers/Html/Html";
+import Html from "../containers/Html/Html";
 
 
 export default function renderFullPage(body, head, assets, state) {
