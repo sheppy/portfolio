@@ -22,47 +22,14 @@
 "use strict";
 
 import React from "react";
-import serialize from "serialize-javascript";
+import { renderToStaticMarkup } from "react-dom/server";
+import Html from "../../shared/containers/Html/Html";
 
-const REGEX_REMOVE_META_DATA_ATTR = / data-react-helmet="true"/g;
 
+export default function renderFullPage(body, head, assets, state) {
+    const props = { body, head, assets, state };
+    const doctype = "<!DOCTYPE html>";
+    const html = renderToStaticMarkup(<Html {...props} />);
 
-export default function renderFullPage(componentHtml, head, state = {}, assets = {}) {
-    const title = head.title.toString().replace(REGEX_REMOVE_META_DATA_ATTR, "");
-    const meta = head.meta.toString().replace(REGEX_REMOVE_META_DATA_ATTR, "");
-
-    const styles = Object.keys(assets.styles).map(style => `<link href="${assets.styles[style]}" rel="stylesheet">`);
-    const inlineStyles = Object.keys(assets.assets).map(asset => assets.assets[asset]._style || "").filter(n => !!n);
-
-    if (inlineStyles.length) {
-        styles.unshift(`<style type="text/css">${inlineStyles.join("\n")}</style>`);
-    }
-
-    const scripts = Object.keys(assets.javascript).filter(n => n !== "vendor").map(script => `<script src="${assets.javascript[script]}"></script>`);
-
-    if (assets.javascript.vendor) {
-        scripts.unshift(`<script src="${assets.javascript.vendor}"></script>`)
-    }
-
-    const bootstrap = state ? `<script type="application/json" id="bootstrap">${serialize(state)}</script>` : "";
-
-    const html = `
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    ${title}
-    ${meta}
-    ${styles.join("\n")}
-</head>
-<body>
-    <div id="app">${componentHtml}</div>
-    
-    ${bootstrap}
-    
-    ${scripts.join("\n")}
-</body>
-</html>`;
-
-    return `<!DOCTYPE html>${html}`;
+    return `${doctype}\n${html}`;
 }

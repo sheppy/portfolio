@@ -1,13 +1,10 @@
 "use strict";
 
 import React from "react";
-import { renderToString } from "react-dom/server";
+import { renderToStaticMarkup } from "react-dom/server";
 import ReactHelmet from "react-helmet";
 import renderFullPage from "../src/server/utils/renderFullPage";
 import ServerError from "../src/shared/components/ServerError/ServerError";
-
-
-const REGEX_REMOVE_REACT_DATA_ATTR = / data-react.*?="[^"]+"/g;
 
 
 export default function(config) {
@@ -19,19 +16,19 @@ export default function(config) {
 
         if (typeof filename === "string") {
             if (filename.substr(-4) === ".css") {
-                assets.styles[chunk] = filename;
+                assets.styles[chunk] = `${config.webpack.publicPath}${filename}`;
             }
         } else {
             filename.forEach(filename => {
                 if (filename.substr(-4) === ".css") {
-                    assets.styles[chunk] = filename;
+                    assets.styles[chunk] = `${config.webpack.publicPath}${filename}`;
                 }
             })
         }
     });
 
-    const html = renderToString(<ServerError />).replace(REGEX_REMOVE_REACT_DATA_ATTR, "");
+    const body = renderToStaticMarkup(<ServerError />);
     const head = ReactHelmet.rewind();
 
-    return renderFullPage(html, head, null, assets);
+    return renderFullPage(body, head, assets);
 }

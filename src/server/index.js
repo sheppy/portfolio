@@ -54,6 +54,8 @@ async function loadData(url, options) {
 }
 global.fetch = loadData;
 
+const DIR_BUILD = path.resolve(__dirname, "..", "..", "build");
+const DIR_PUBLIC = path.resolve(__dirname, "..", "..", "public");
 
 const app = express();
 
@@ -80,8 +82,8 @@ app.use(helmet.xssFilter());
 runMiddleware(app);
 
 // Static assets
-app.use("/", expressStaticGzip(path.resolve(__dirname, "..", "..", "build")));
-app.use("/", expressStaticGzip(path.resolve(__dirname, "..", "..", "public")));
+app.use("/", expressStaticGzip(DIR_BUILD));
+app.use("/", expressStaticGzip(DIR_PUBLIC));
 
 // Logging
 app.use(expressWinston.logger({
@@ -94,11 +96,14 @@ app.use(expressWinston.logger({
 app.use("/api", apiRoute);
 app.use(reactRoute);
 
-// TODO: Static 404 page
-
 // Static error page
 app.use((err, req, res, next) => {
-    // TODO: Nice static error page
+    logger.error(err);
+    res.status(500).sendFile(path.join(DIR_BUILD, "500.html"));
+});
+
+// Fatal error page
+app.use((err, req, res, next) => {
     logger.error(err);
     res.status(500).end("500: Internal server error");
 });

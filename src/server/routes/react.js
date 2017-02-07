@@ -90,7 +90,7 @@ const serverSideRender = async (url) => {
 reactRoute.use((req, res, next) => {
     serverSideRender(req.url)
         .then(({ status, html, head, state, assets }) => {
-            res.status(status).send(renderFullPage(html, head, state, assets))
+            res.status(status).send(renderFullPage(html, head, assets, state))
         })
         .catch(err => {
             if (err.status === 404) {

@@ -26,6 +26,7 @@ const webpack = require("webpack");
 const SplitByPathPlugin = require("webpack-split-by-path");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const HtmlWebpackHarddiskPlugin = require("html-webpack-harddisk-plugin");
 const PATHS = require("./paths");
 
 
@@ -74,14 +75,17 @@ const commonConfig = {
         new HtmlWebpackPlugin({
             filename: "500.html",
             chunks: [],
-            template: path.join(__dirname, "template.jsx"),
+            template: path.join(__dirname, "template.js"),
             inject: false,
             minify: {
                 collapseWhitespace: true,
                 preserveLineBreaks: true,
                 removeComments: true
-            }
-        })
+            },
+            alwaysWriteToDisk: true
+        }),
+
+        new HtmlWebpackHarddiskPlugin()
     ]
 };
 
