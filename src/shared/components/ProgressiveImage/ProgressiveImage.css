@@ -1,10 +1,16 @@
 .image {
     display: block;
     width: 100%;
+    height: auto;
 }
 
 .placeholder {
     display: block;
     width: 100%;
+    height: auto;
     filter: blur(8px);
+}
+
+amp-img.placeholder {
+    filter: none;
 }

@@ -24,12 +24,32 @@
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import Html from "../containers/Html/Html";
+import AmpHtml from "../containers/AmpHtml/AmpHtml";
 
 
-export default function renderFullPage(body, head, assets, state) {
-    const props = { body, head, assets, state };
+export function renderHtmlPage(body, head, assets, state, pathName) {
+    const props = { body, head, assets, state, pathName };
     const doctype = "<!DOCTYPE html>";
     const html = renderToStaticMarkup(<Html {...props} />);
+
+    return `${doctype}\n${html}`;
+}
+
+
+export function renderAmpPage(body, head, assets, pathName) {
+    const props = { body, head, assets, pathName };
+    const doctype = "<!DOCTYPE html>";
+    const html = renderToStaticMarkup(<AmpHtml {...props} />)
+        .replace(/ amp="true"/g, " ⚡")
+        .replace(/ amp-custom="true"/g, " amp-custom")
+        .replace(/ amp-boilerplate="true"/g, " amp-boilerplate")
+        .replace(/ is="true"/g, "")
+        .replace(/ async="[^"]*"/g, " async")
+        .replace(/ data-react[^=]+="[^"]+"/g, "")
+        .replace(/ data-reactroot=""/g, "")
+        .replace(/<!-- react-empty: \d+ -->/g, "")
+        .replace(/<img (.*?)src="([^"]+)" data-src="([^"]+)"([^>]*)>/g, "<amp-img layout=\"responsive\" $1src=\"$3\"$4></amp-img>")
+        .replace(/<img ([^>]+)>/g, "<amp-img layout=\"responsive\" $1></amp-img>");
 
     return `${doctype}\n${html}`;
 }

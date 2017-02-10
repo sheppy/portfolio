@@ -3,7 +3,7 @@
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import ReactHelmet from "react-helmet";
-import renderFullPage from "../src/server/utils/renderFullPage";
+import { renderHtmlPage } from "../src/server/utils/renderFullPage";
 import ServerError from "../src/server/components/ServerError/ServerError";
 
 
@@ -30,5 +30,5 @@ export default function(config) {
     const body = renderToStaticMarkup(<ServerError />);
     const head = ReactHelmet.rewind();
 
-    return renderFullPage(body, head, assets);
+    return renderHtmlPage(body, head, assets);
 }

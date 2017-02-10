@@ -22,6 +22,7 @@
 "use strict";
 
 
+import url from "url";
 import express from "express";
 import React from "react";
 import { renderToString } from "react-dom/server";
@@ -32,10 +33,9 @@ import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import NestedStatus from "react-nested-status";
 import ReactHelmet from "react-helmet";
-
 import routes from "../../shared/routes";
 import rootReducer from "../../shared/store/reducers";
-import renderFullPage from "../utils/renderFullPage";
+import { renderHtmlPage, renderAmpPage } from "../utils/renderFullPage";
 
 const reactRoute = express.Router();
 
@@ -88,9 +88,19 @@ const serverSideRender = async (url) => {
 
 
 reactRoute.use((req, res, next) => {
+    let pathName = url.parse(req.url).pathname;
+    if (pathName === "/index.html") { pathName = "/"; }
+
     serverSideRender(req.url)
         .then(({ status, html, head, state, assets }) => {
-            res.status(status).send(renderFullPage(html, head, assets, state))
+            let finalHtml;
+            if (req.query.amp) {
+                finalHtml = renderAmpPage(html, head, assets, pathName);
+            } else {
+                finalHtml = renderHtmlPage(html, head, assets, state, pathName);
+            }
+
+            res.status(status).send(finalHtml)
         })
         .catch(err => {
             if (err.status === 404) {

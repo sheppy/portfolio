@@ -56,10 +56,15 @@ class ProgressiveImage extends Component {
     }
 
     render() {
+        const { src, placeholder, alt = "", width = 320, height = 256 } = this.props;
         return (
             <img
                 className={this.state.loaded ? styles.image : styles.placeholder}
-                src={this.state.loaded ? this.props.src : this.props.placeholder}
+                src={this.state.loaded ? src : placeholder}
+                data-src={src}
+                width={width}
+                height={height}
+                alt={alt}
             />
         );
     }

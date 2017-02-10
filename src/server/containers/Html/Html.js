@@ -24,7 +24,7 @@
 import React from "react";
 import serialize from "serialize-javascript";
 
-const Html = ({ body, head, assets, state }) => {
+const Html = ({ body, head, assets, state, pathName }) => {
     const {vendor, ...otherScripts} = assets.javascript;
     const scripts = { vendor, ...otherScripts };
     if (!scripts.vendor) {
@@ -37,11 +37,12 @@ const Html = ({ body, head, assets, state }) => {
         <html lang="en">
         <head>
             <meta charSet="utf-8" />
-            <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-            <meta name="viewport" content="width=device-width, minimum-scale=1" />
+            <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
+            <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1" />
             {head.title.toComponent()}
             {head.meta.toComponent()}
             {head.link.toComponent()}
+            <link rel="amphtml" href={`${pathName}?amp=1`} />
 
             {inlineStyles &&
                 <style type="text/css" dangerouslySetInnerHTML={{ __html: inlineStyles }} />
