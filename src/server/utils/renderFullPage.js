@@ -30,7 +30,8 @@ import AmpHtml from "../containers/AmpHtml/AmpHtml";
 export function renderHtmlPage(body, head, assets, state, pathName) {
     const props = { body, head, assets, state, pathName };
     const doctype = "<!DOCTYPE html>";
-    const html = renderToStaticMarkup(<Html {...props} />);
+    const html = renderToStaticMarkup(<Html {...props} />)
+        .replace(/ data-react-helmet="true"/g, "");
 
     return `${doctype}\n${html}`;
 }

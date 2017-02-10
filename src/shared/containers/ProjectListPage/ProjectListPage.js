@@ -28,11 +28,12 @@ import * as projectsActions from "../../store/projects/actions";
 import * as projectsSelector from "../../store/projects/selectors";
 import ListView from "../../components/ListView/ListView";
 import ProjectTile from "../../components/ProjectTile/ProjectTile";
+import ProjectStructuredData from "../../components/ProjectStructuredData/ProjectStructuredData";
 
 
 class ProjectListPage extends Component {
     componentDidMount() {
-        if (!this.props.rowsById || !this.props.rowsIdArray) {
+        if (!this.props.projectsById || !this.props.projectsIdArray) {
             this.props.dispatch(projectsActions.fetchProjects());
         }
     }
@@ -41,10 +42,11 @@ class ProjectListPage extends Component {
         return (
             <div>
                 <Helmet title="Recent Projects" />
+                <ProjectStructuredData projects={this.props.projectsById} />
 
                 <h1>Projects</h1>
 
-                <ListView rowsIdArray={this.props.rowsIdArray} rowsById={this.props.rowsById} renderRow={this.renderRow} />
+                <ListView rowsIdArray={this.props.projectsIdArray} rowsById={this.props.projectsById} renderRow={this.renderRow} />
             </div>
         );
     }
@@ -57,14 +59,14 @@ class ProjectListPage extends Component {
 }
 
 ProjectListPage.propTypes = {
-    rowsIdArray: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
-    rowsById: React.PropTypes.object.isRequired
+    projectsIdArray: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+    projectsById: React.PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        rowsById: projectsSelector.getProjectsById(state),
-        rowsIdArray: projectsSelector.getProjectsIdArray(state)
+        projectsById: projectsSelector.getProjectsById(state),
+        projectsIdArray: projectsSelector.getProjectsIdArray(state)
     };
 };
 

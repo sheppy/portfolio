@@ -42,6 +42,7 @@ const Html = ({ body, head, assets, state, pathName }) => {
             {head.title.toComponent()}
             {head.meta.toComponent()}
             {head.link.toComponent()}
+            {head.script.toComponent()}
             <link rel="amphtml" href={`${pathName}?amp=1`} />
 
             {inlineStyles &&

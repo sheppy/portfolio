@@ -27,6 +27,7 @@ import Helmet from "react-helmet";
 import * as projectsActions from "../../store/projects/actions";
 import * as projectsSelector from "../../store/projects/selectors";
 import NotFound from "../../components/NotFound/NotFound";
+import ProjectStructuredData from "../../components/ProjectStructuredData/ProjectStructuredData";
 
 
 class ProjectDetailsPage extends Component {
@@ -45,6 +46,8 @@ class ProjectDetailsPage extends Component {
         return (
             <div>
                 <Helmet title={this.props.project.title} />
+
+                <ProjectStructuredData projects={{[this.props.project.id]: this.props.project}} />
 
                 <h1>{this.props.project.title}</h1>
 
