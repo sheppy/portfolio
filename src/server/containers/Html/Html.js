@@ -43,7 +43,9 @@ const Html = ({ body, head, assets, state, pathName }) => {
             {head.meta.toComponent()}
             {head.link.toComponent()}
             {head.script.toComponent()}
-            <link rel="amphtml" href={`${pathName}?amp=1`} />
+            {pathName &&
+                <link rel="amphtml" href={`${pathName}?amp=1`} />
+            }
 
             {inlineStyles &&
                 <style type="text/css" dangerouslySetInnerHTML={{ __html: inlineStyles }} />
