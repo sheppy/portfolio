@@ -31,6 +31,7 @@ import Immutable from "seamless-immutable";
 import ReactGA from "react-ga";
 import routes from "../shared/routes";
 import rootReducer from "../shared/store/reducers";
+import config from "../shared/config.json";
 
 
 let bootstrap = document.getElementById("bootstrap").textContent;
@@ -44,8 +45,7 @@ const store = createStore(rootReducer, initialState, middleware);
 
 
 if (process.env.NODE_ENV === "production") {
-    // TODO: Set the GA account
-    // ReactGA.initialize("UA-000000-01");
+    ReactGA.initialize(config.gaAccount);
 }
 
 const logPageView = () => {

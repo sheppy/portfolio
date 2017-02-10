@@ -22,6 +22,9 @@
 "use strict";
 
 import React from "react";
+import config from "../../../shared/config.json";
+
+const IS_PROD = (process.env.NODE_ENV === "production");
 
 const AmpHtml = ({ body, head, assets, pathName }) => {
     const inlineStyles = Object.keys(assets.assets).map(asset => assets.assets[asset]._style || "").filter(n => !!n).join("\n");
@@ -30,7 +33,7 @@ const AmpHtml = ({ body, head, assets, pathName }) => {
     const fallbackBoilerplateStyles = "body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}";
     const analytics = {
         "vars": {
-            "account": "UA-XXXXXXXX-XX"
+            "account": config.gaAccount
         },
         "triggers": {
             "trackPageview": {
@@ -44,7 +47,9 @@ const AmpHtml = ({ body, head, assets, pathName }) => {
         <html is amp lang="en">
         <head>
             <meta charSet="utf-8" />
-            <script is async custom-element="amp-analytics" src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"></script>
+            {IS_PROD &&
+                <script is async custom-element="amp-analytics" src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"></script>
+            }
             <script async src="https://cdn.ampproject.org/v0.js"></script>
             {head.title.toComponent()}
             <link rel="canonical" href={pathName} />
@@ -58,9 +63,12 @@ const AmpHtml = ({ body, head, assets, pathName }) => {
         </head>
         <body>
             <div dangerouslySetInnerHTML={{ __html: body }}></div>
-            <amp-analytics type="googleanalytics">
-                <script type="application/json" dangerouslySetInnerHTML={{ __html: JSON.stringify(analytics) }}></script>
-            </amp-analytics>
+
+            {IS_PROD &&
+                <amp-analytics type="googleanalytics">
+                    <script type="application/json" dangerouslySetInnerHTML={{ __html: JSON.stringify(analytics) }}></script>
+                </amp-analytics>
+            }
         </body>
         </html>
     )

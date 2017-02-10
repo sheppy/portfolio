@@ -86,7 +86,16 @@ const commonConfig = {
         }),
 
         new HtmlWebpackHarddiskPlugin()
-    ]
+    ],
+
+    module: {
+        rules: [
+            {
+                test: /\.json$/,
+                use: "json-loader"
+            }
+        ]
+    }
 };
 
 
